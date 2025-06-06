@@ -32,15 +32,15 @@
 ---
 
 ## ⬜ M2 Constants & CRC Utilities
-- [ ] **Create `sok_ble/const.py`**
-  - [ ] Add `UUID_RX`, `UUID_TX`
-  - [ ] Define command byte lists (`CMD_NAME`, `CMD_INFO`, `CMD_DETAIL`, `CMD_SETTING`, `CMD_PROTECTION`, `CMD_BREAK`)
-  - [ ] Implement `minicrc(data)` crc-8 function
-  - [ ] Implement `_sok_command(cmd: int) -> bytes`
-- [ ] **Add tests** `tests/test_const.py`
-  - [ ] Validate `minicrc` result for sample data
-  - [ ] Validate `_sok_command` length & crc byte
-- [ ] **All tests green**
+- [x] **Create `sok_ble/const.py`**
+  - [x] Add `UUID_RX`, `UUID_TX`
+  - [x] Define command byte lists (`CMD_NAME`, `CMD_INFO`, `CMD_DETAIL`, `CMD_SETTING`, `CMD_PROTECTION`, `CMD_BREAK`)
+  - [x] Implement `minicrc(data)` crc-8 function
+  - [x] Implement `_sok_command(cmd: int) -> bytes`
+- [x] **Add tests** `tests/test_const.py`
+  - [x] Validate `minicrc` result for sample data
+  - [x] Validate `_sok_command` length & crc byte
+- [x] **All tests green**
 
 ---
 

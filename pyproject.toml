@@ -26,6 +26,10 @@ classifiers = [
 license-files = []
 # Fix from https://github.com/astral-sh/uv/issues/9513#issuecomment-2519527822
 
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
 [tool.semantic_release]
 branch = "main"
 version_toml = ["pyproject.toml:project.version"]
