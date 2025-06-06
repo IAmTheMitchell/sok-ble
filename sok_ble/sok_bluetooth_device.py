@@ -4,12 +4,15 @@ from __future__ import annotations
 
 from contextlib import asynccontextmanager
 from typing import AsyncIterator, Optional
+import logging
 import statistics
 
 from bleak.backends.device import BLEDevice
 
 from sok_ble.const import UUID_RX, UUID_TX, _sok_command
 from sok_ble.sok_parser import SokParser
+
+logger = logging.getLogger(__name__)
 
 try:
     from bleak_retry_connector import (
@@ -42,6 +45,7 @@ class SokBluetoothDevice:
     @asynccontextmanager
     async def _connect(self) -> AsyncIterator[BleakClientWithServiceCache]:
         """Connect to the device and yield a BLE client."""
+        logger.debug("Connecting to %s", self._ble_device.address)
         if establish_connection:
             client = await establish_connection(
                 BleakClientWithServiceCache,
@@ -59,24 +63,38 @@ class SokBluetoothDevice:
             yield client
         finally:
             await client.disconnect()
+            logger.debug("Disconnected from %s", self._ble_device.address)
 
     async def async_update(self) -> None:
         """Poll the device for all telemetry and update attributes."""
         responses: dict[int, bytes] = {}
         async with self._connect() as client:
+            logger.debug("Send C1")
             await client.write_gatt_char(UUID_TX, _sok_command(0xC1))
-            responses[0xCCF0] = bytes(await client.read_gatt_char(UUID_RX))
+            data = bytes(await client.read_gatt_char(UUID_RX))
+            logger.debug("Recv 0xCCF0: %s", data.hex())
+            responses[0xCCF0] = data
 
+            logger.debug("Send C1")
             await client.write_gatt_char(UUID_TX, _sok_command(0xC1))
-            responses[0xCCF2] = bytes(await client.read_gatt_char(UUID_RX))
+            data = bytes(await client.read_gatt_char(UUID_RX))
+            logger.debug("Recv 0xCCF2: %s", data.hex())
+            responses[0xCCF2] = data
 
+            logger.debug("Send C2")
             await client.write_gatt_char(UUID_TX, _sok_command(0xC2))
-            responses[0xCCF3] = bytes(await client.read_gatt_char(UUID_RX))
+            data = bytes(await client.read_gatt_char(UUID_RX))
+            logger.debug("Recv 0xCCF3: %s", data.hex())
+            responses[0xCCF3] = data
 
+            logger.debug("Send C2")
             await client.write_gatt_char(UUID_TX, _sok_command(0xC2))
-            responses[0xCCF4] = bytes(await client.read_gatt_char(UUID_RX))
+            data = bytes(await client.read_gatt_char(UUID_RX))
+            logger.debug("Recv 0xCCF4: %s", data.hex())
+            responses[0xCCF4] = data
 
         parsed = SokParser.parse_all(responses)
+        logger.debug("Parsed update: %s", parsed)
 
         self.voltage = parsed["voltage"]
         self.current = parsed["current"]

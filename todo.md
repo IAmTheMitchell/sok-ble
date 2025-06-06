@@ -118,14 +118,14 @@
 
 ## ⬜ M9 Logging & Docs
 - [ ] **Add `logging` calls**
-  - [ ] DEBUG: command send/recv
+  - [x] DEBUG: command send/recv
   - [ ] INFO: update success
   - [ ] ERROR: exceptions
 - [ ] **Enhance type hints across codebase**
 - [ ] **Update `README.md`**
-  - [ ] Quick usage snippet
-  - [ ] Badge for CI
-- [ ] **No test changes** (ensure existing pass)
+  - [x] Quick usage snippet
+  - [x] Badge for CI
+- [x] **No test changes** (ensure existing pass)
 
 ---
 
