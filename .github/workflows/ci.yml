@@ -38,44 +38,44 @@ jobs:
       - name: Run tests
         run: uv run pytest tests
 
-  # release:
-  #   runs-on: ubuntu-latest
-  #   environment: release
-  #   if: github.ref == 'refs/heads/main'
-  #   needs:
-  #     - test
-  #   permissions:
-  #     id-token: write
-  #     contents: write
+  release:
+    runs-on: ubuntu-latest
+    environment: release
+    if: github.ref == 'refs/heads/main'
+    needs:
+      - test
+    permissions:
+      id-token: write
+      contents: write
 
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #       with:
-  #         fetch-depth: 0
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-  #     - name: Install uv
-  #       uses: astral-sh/setup-uv@v5
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
 
-  #     - name: Set up Python
-  #       run: uv python install
+      - name: Set up Python
+        run: uv python install
 
-  #     - name: Python Semantic Release
-  #       id: release
-  #       uses: python-semantic-release/python-semantic-release@v9.21.0
-  #       with:
-  #         github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Python Semantic Release
+        id: release
+        uses: python-semantic-release/python-semantic-release@v9.21.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
-  #     - name: Build package
-  #       run: uv build
+      - name: Build package
+        run: uv build
 
-  #     - name: Upload package to PyPI
-  #       run: uv publish
-  #       if: steps.release.outputs.released == 'true'
+      - name: Upload package to PyPI
+        run: uv publish
+        if: steps.release.outputs.released == 'true'
 
-  #     - name: Upload Github Release Assets
-  #       uses: python-semantic-release/publish-action@v9.21.0
-  #       if: steps.release.outputs.released == 'true'
-  #       with:
-  #         github_token: ${{ secrets.GITHUB_TOKEN }}
-  #         tag: ${{ steps.release.outputs.tag }}
+      - name: Upload Github Release Assets
+        uses: python-semantic-release/publish-action@v9.21.0
+        if: steps.release.outputs.released == 'true'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ steps.release.outputs.tag }}
 
