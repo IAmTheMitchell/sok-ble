@@ -106,13 +106,13 @@
 ---
 
 ## ⬜ M8 Derived Metrics
-- [ ] **Implement derived getters**
-  - [ ] `power`
-  - [ ] Cell stats: `cell_voltage_max`, `min`, `avg`, `median`, `delta`, `cell_index_max`, `cell_index_min`
-  - [ ] `num_samples` counter
-- [ ] **Add tests** `tests/test_derived.py`
-  - [ ] Provide synthetic cell list, assert metrics
-- [ ] **All tests green**
+- [x] **Implement derived getters**
+  - [x] `power`
+  - [x] Cell stats: `cell_voltage_max`, `min`, `avg`, `median`, `delta`, `cell_index_max`, `cell_index_min`
+  - [x] `num_samples` counter
+- [x] **Add tests** `tests/test_derived.py`
+  - [x] Provide synthetic cell list, assert metrics
+- [x] **All tests green**
 
 ---
 
