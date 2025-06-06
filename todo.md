@@ -93,15 +93,15 @@
 ---
 
 ## ⬜ M7 Device Polling (Complete)
-- [ ] **Expand `async_update()`**
-  - [ ] Fetch 0xC1 (info, temps)
-  - [ ] Fetch 0xC2 (capacity, cells) twice
-  - [ ] Build `responses` dict → `SokParser.parse_all`
-  - [ ] Update all attributes
-- [ ] **Add tests** `tests/test_device_full.py`
-  - [ ] Mock sequential reads with fixture payloads
-  - [ ] Validate all attributes present
-- [ ] **All tests green**
+- [x] **Expand `async_update()`**
+  - [x] Fetch 0xC1 (info, temps)
+  - [x] Fetch 0xC2 (capacity, cells) twice
+  - [x] Build `responses` dict → `SokParser.parse_all`
+  - [x] Update all attributes
+- [x] **Add tests** `tests/test_device_full.py`
+  - [x] Mock sequential reads with fixture payloads
+  - [x] Validate all attributes present
+- [x] **All tests green**
 
 ---
 
