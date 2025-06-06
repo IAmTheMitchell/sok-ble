@@ -130,11 +130,11 @@
 ---
 
 ## ⬜ M10 Integration (Mock)
-- [ ] **Add `tests/test_integration_mock.py`**
-  - [ ] Mock entire 4-message exchange
-  - [ ] Call `async_update()` once
-  - [ ] Ensure all public properties populated correctly
-- [ ] **All tests green**
+- [x] **Add `tests/test_integration_mock.py`**
+  - [x] Mock entire 4-message exchange
+  - [x] Call `async_update()` once
+  - [x] Ensure all public properties populated correctly
+- [x] **All tests green**
 
 ---
 
