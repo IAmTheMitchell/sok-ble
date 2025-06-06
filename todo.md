@@ -45,13 +45,13 @@
 ---
 
 ## ⬜ M3 Custom Exceptions
-- [ ] **Create `sok_ble/exceptions.py`**
-  - [ ] `class SokError`
-  - [ ] `class BLEConnectionError(SokError)`
-  - [ ] `class InvalidResponseError(SokError)`
-- [ ] **Add tests** `tests/test_exceptions.py`
-  - [ ] Check inheritance & raise behavior
-- [ ] **All tests green**
+- [x] **Create `sok_ble/exceptions.py`**
+  - [x] `class SokError`
+  - [x] `class BLEConnectionError(SokError)`
+  - [x] `class InvalidResponseError(SokError)`
+- [x] **Add tests** `tests/test_exceptions.py`
+  - [x] Check inheritance & raise behavior
+- [x] **All tests green**
 
 ---
 
