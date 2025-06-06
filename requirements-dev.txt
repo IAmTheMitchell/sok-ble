@@ -1,0 +1,5 @@
+bleak
+pytest
+pytest-asyncio
+mypy
+ruff
