@@ -1,6 +1,6 @@
-from __future__ import annotations
-
 """BLE device abstraction for SOK batteries."""
+
+from __future__ import annotations
 
 from contextlib import asynccontextmanager
 from typing import AsyncIterator, Optional
@@ -35,15 +35,9 @@ class SokBluetoothDevice:
         self.capacity: float | None = None
         self.num_cycles: int | None = None
         self.cell_voltages: list[float] | None = None
-        # Derived metrics
-        self.power: float | None = None
-        self.cell_voltage_max: float | None = None
-        self.cell_voltage_min: float | None = None
-        self.cell_voltage_avg: float | None = None
-        self.cell_voltage_median: float | None = None
-        self.cell_voltage_delta: float | None = None
-        self.cell_index_max: int | None = None
-        self.cell_index_min: int | None = None
+
+        # Housekeeping
+        self.num_samples = 0
 
     @asynccontextmanager
     async def _connect(self) -> AsyncIterator[BleakClientWithServiceCache]:
@@ -92,14 +86,57 @@ class SokBluetoothDevice:
         self.num_cycles = parsed["num_cycles"]
         self.cell_voltages = parsed["cell_voltages"]
 
-        # Derived metrics
-        self.power = self.voltage * self.current
-        self.cell_voltage_max = max(self.cell_voltages)
-        self.cell_voltage_min = min(self.cell_voltages)
-        self.cell_voltage_avg = sum(self.cell_voltages) / len(self.cell_voltages)
-        self.cell_voltage_median = statistics.median(self.cell_voltages)
-        self.cell_index_max = self.cell_voltages.index(self.cell_voltage_max)
-        self.cell_index_min = self.cell_voltages.index(self.cell_voltage_min)
-        self.cell_voltage_delta = (
-            self.cell_voltage_max - self.cell_voltage_min
-        )
+        self.num_samples += 1
+
+    # Derived metrics -----------------------------------------------------
+
+    @property
+    def power(self) -> float | None:
+        """Return instantaneous power in watts."""
+        if self.voltage is None or self.current is None:
+            return None
+        return self.voltage * self.current
+
+    @property
+    def cell_voltage_max(self) -> float | None:
+        cells = self.cell_voltages
+        return max(cells) if cells else None
+
+    @property
+    def cell_voltage_min(self) -> float | None:
+        cells = self.cell_voltages
+        return min(cells) if cells else None
+
+    @property
+    def cell_voltage_avg(self) -> float | None:
+        cells = self.cell_voltages
+        if not cells:
+            return None
+        return sum(cells) / len(cells)
+
+    @property
+    def cell_voltage_median(self) -> float | None:
+        cells = self.cell_voltages
+        if not cells:
+            return None
+        return statistics.median(cells)
+
+    @property
+    def cell_voltage_delta(self) -> float | None:
+        if self.cell_voltage_max is None or self.cell_voltage_min is None:
+            return None
+        return self.cell_voltage_max - self.cell_voltage_min
+
+    @property
+    def cell_index_max(self) -> int | None:
+        cells = self.cell_voltages
+        if not cells:
+            return None
+        return cells.index(max(cells))
+
+    @property
+    def cell_index_min(self) -> int | None:
+        cells = self.cell_voltages
+        if not cells:
+            return None
+        return cells.index(min(cells))
