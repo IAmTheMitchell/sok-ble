@@ -4,6 +4,31 @@ version = "0.1.0"
 description = "SOK BLE battery interface library"
 readme = "README.md"
 requires-python = ">=3.11"
+dependencies = [
+    "pytest>=7.0.1",
+]
+authors = [
+    {name = "Mitchell Carlson", email = "mitchell.carlson.pro@gmail.com"}
+]
+license = {text = "Apache-2.0"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/IAmTheMitchell/sok-ble"
+"Bug Tracker" = "https://github.com/IAmTheMitchell/sok-ble/issues"
+"Changelog" = "https://github.com/IAmTheMitchell/sok-ble/blob/main/CHANGELOG.md"
+
+[tool.setuptools]
+license-files = []
+# Fix from https://github.com/astral-sh/uv/issues/9513#issuecomment-2519527822
+
+[tool.semantic_release]
+branch = "main"
+version_toml = ["pyproject.toml:project.version"]
 
 [tool.ruff]
 # Ruff configuration placeholder
