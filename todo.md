@@ -56,13 +56,13 @@
 ---
 
 ## ⬜ M4 SokParser (Minimal)
-- [ ] **Create `sok_ble/sok_parser.py`**
-  - [ ] Copy endian helper functions (`get_le_short`, `get_le_ushort`, `get_le_int3`, `get_be_uint3`)
-  - [ ] Implement `class SokParser` ➜ `parse_info(buf)` → returns `voltage`, `current`, `soc`
-  - [ ] Raise `InvalidResponseError` on malformed buf
-- [ ] **Add tests** `tests/test_parser_info.py`
-  - [ ] Fixture hex → dict comparison
-- [ ] **All tests green**
+- [x] **Create `sok_ble/sok_parser.py`**
+  - [x] Copy endian helper functions (`get_le_short`, `get_le_ushort`, `get_le_int3`, `get_be_uint3`)
+  - [x] Implement `class SokParser` ➜ `parse_info(buf)` → returns `voltage`, `current`, `soc`
+  - [x] Raise `InvalidResponseError` on malformed buf
+- [x] **Add tests** `tests/test_parser_info.py`
+  - [x] Fixture hex → dict comparison
+- [x] **All tests green**
 
 ---
 
