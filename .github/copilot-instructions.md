@@ -4,3 +4,8 @@
 
 # Testing
 - Use pytest for Python testing
+
+# Commits
+- Use conventional commits for all changes 
+    - Prefix all commit messages with fix:; feat:; build:; chore:; ci:; docs:; style:; refactor:; perf:; or test: as appropriate.
+    
