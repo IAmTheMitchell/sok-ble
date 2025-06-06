@@ -80,15 +80,15 @@
 ---
 
 ## ⬜ M6 Device Skeleton
-- [ ] **Create `sok_ble/sok_bluetooth_device.py`**
-  - [ ] `__init__(ble_device, adapter=None)`
-  - [ ] Async context `_connect()`
-  - [ ] Implement minimal `async_update()` (info fetch only)
-  - [ ] Store `voltage`, `current`, `soc`
-- [ ] **Add tests** `tests/test_device_minimal.py`
-  - [ ] Mock BleakClient read → info payload
-  - [ ] Assert attributes populated
-- [ ] **All tests green**
+- [x] **Create `sok_ble/sok_bluetooth_device.py`**
+  - [x] `__init__(ble_device, adapter=None)`
+  - [x] Async context `_connect()`
+  - [x] Implement minimal `async_update()` (info fetch only)
+  - [x] Store `voltage`, `current`, `soc`
+- [x] **Add tests** `tests/test_device_minimal.py`
+  - [x] Mock BleakClient read → info payload
+  - [x] Assert attributes populated
+- [x] **All tests green**
 
 ---
 

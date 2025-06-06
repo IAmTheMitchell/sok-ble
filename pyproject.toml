@@ -5,7 +5,8 @@ description = "SOK BLE battery interface library"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "pytest>=7.0.1",
+    "bleak>=0.22.3",
+    "bleak-retry-connector>=3.10.0",
 ]
 authors = [
     {name = "Mitchell Carlson", email = "mitchell.carlson.pro@gmail.com"}
@@ -29,6 +30,12 @@ license-files = []
 [build-system]
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
+
+[dependency-groups]
+dev = [
+    "pytest>=7.0.1",
+    "pytest-asyncio>=1.0.0",
+]
 
 [tool.semantic_release]
 branch = "main"
