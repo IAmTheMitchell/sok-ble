@@ -6,28 +6,28 @@
 ---
 
 ## ⬜ M1 Repo Scaffold & Tooling
-- [ ] **Create folder structure**
-  - [ ] `sok_ble/`
-  - [ ] `tests/`
-- [ ] **Add empty/init files**
-  - [ ] `sok_ble/__init__.py`
-  - [ ] `README.md`
-  - [ ] `pyproject.toml`
-  - [ ] `requirements-dev.txt`
-- [ ] **Configure tooling**
-  - [ ] Add project metadata (`[project]`) to `pyproject.toml`
-  - [ ] Add `ruff` and `mypy` sections (can be placeholders)
-- [ ] **Populate `requirements-dev.txt`**
-  - [ ] `bleak`
-  - [ ] `pytest`
-  - [ ] `pytest-asyncio`
-  - [ ] `mypy`
-  - [ ] `ruff`
-- [ ] **Write initial GitHub Actions workflow** (`.github/workflows/ci.yml`)
-  - [ ] Install uv
-  - [ ] `uv pip install -r requirements-dev.txt`
-  - [ ] `pytest`
-- [ ] **Ensure `pytest` runs (0 tests, 0 failures)**
+- [x] **Create folder structure**
+  - [x] `sok_ble/`
+  - [x] `tests/`
+- [x] **Add empty/init files**
+  - [x] `sok_ble/__init__.py`
+  - [x] `README.md`
+  - [x] `pyproject.toml`
+  - [x] `requirements-dev.txt`
+- [x] **Configure tooling**
+  - [x] Add project metadata (`[project]`) to `pyproject.toml`
+  - [x] Add `ruff` and `mypy` sections (can be placeholders)
+- [x] **Populate `requirements-dev.txt`**
+  - [x] `bleak`
+  - [x] `pytest`
+  - [x] `pytest-asyncio`
+  - [x] `mypy`
+  - [x] `ruff`
+- [x] **Write initial GitHub Actions workflow** (`.github/workflows/ci.yml`)
+  - [x] Install uv
+  - [x] `uv pip install -r requirements-dev.txt`
+  - [x] `pytest`
+- [x] **Ensure `pytest` runs (0 tests, 0 failures)**
 
 ---
 
