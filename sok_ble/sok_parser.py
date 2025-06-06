@@ -61,3 +61,59 @@ class SokParser:
             "current": current,
             "soc": soc,
         }
+
+    @staticmethod
+    def parse_temps(buf: bytes) -> float:
+        """Parse the temperature from the temperature frame."""
+        if len(buf) < 7:
+            raise InvalidResponseError("Temp buffer too short")
+
+        return get_le_short(buf, 5) / 10
+
+    @staticmethod
+    def parse_capacity_cycles(buf: bytes) -> Dict[str, float | int]:
+        """Parse rated capacity and cycle count."""
+        if len(buf) < 6:
+            raise InvalidResponseError("Capacity buffer too short")
+
+        capacity = get_le_ushort(buf, 0) / 100
+        num_cycles = get_le_ushort(buf, 4)
+
+        return {
+            "capacity": capacity,
+            "num_cycles": num_cycles,
+        }
+
+    @staticmethod
+    def parse_cells(buf: bytes) -> list[float]:
+        """Parse individual cell voltages."""
+        if len(buf) < 8:
+            raise InvalidResponseError("Cells buffer too short")
+
+        return [
+            get_le_ushort(buf, 0) / 1000,
+            get_le_ushort(buf, 2) / 1000,
+            get_le_ushort(buf, 4) / 1000,
+            get_le_ushort(buf, 6) / 1000,
+        ]
+
+    @classmethod
+    def parse_all(cls, responses: Dict[int, bytes]) -> Dict[str, float | int | list[float]]:
+        """Parse all response buffers into a single dictionary."""
+        required = {0xCCF0, 0xCCF2, 0xCCF3, 0xCCF4}
+        if not required.issubset(responses):
+            raise InvalidResponseError("Missing response buffers")
+
+        info = cls.parse_info(responses[0xCCF0])
+        temperature = cls.parse_temps(responses[0xCCF2])
+        capacity_info = cls.parse_capacity_cycles(responses[0xCCF3])
+        cells = cls.parse_cells(responses[0xCCF4])
+
+        result = {
+            **info,
+            "temperature": temperature,
+            **capacity_info,
+            "cell_voltages": cells,
+        }
+
+        return result
