@@ -2,10 +2,13 @@
 
 from __future__ import annotations
 
+import logging
 import struct
-from typing import Sequence, Dict
+from typing import Dict, Sequence
 
 from sok_ble.exceptions import InvalidResponseError
+
+logger = logging.getLogger(__name__)
 
 
 # Endian helper functions copied from the reference addon
@@ -41,6 +44,7 @@ class SokParser:
     @staticmethod
     def parse_info(buf: bytes) -> Dict[str, float | int]:
         """Parse the information frame for voltage, current and SOC."""
+        logger.debug("parse_info input: %s", buf.hex())
         if len(buf) < 18:
             raise InvalidResponseError("Info buffer too short")
 
@@ -56,50 +60,62 @@ class SokParser:
 
         soc = struct.unpack_from('<H', buf, 16)[0]
 
-        return {
+        result = {
             "voltage": voltage,
             "current": current,
             "soc": soc,
         }
+        logger.debug("parse_info result: %s", result)
+        return result
 
     @staticmethod
     def parse_temps(buf: bytes) -> float:
         """Parse the temperature from the temperature frame."""
+        logger.debug("parse_temps input: %s", buf.hex())
         if len(buf) < 7:
             raise InvalidResponseError("Temp buffer too short")
 
-        return get_le_short(buf, 5) / 10
+        temperature = get_le_short(buf, 5) / 10
+        logger.debug("parse_temps result: %s", temperature)
+        return temperature
 
     @staticmethod
     def parse_capacity_cycles(buf: bytes) -> Dict[str, float | int]:
         """Parse rated capacity and cycle count."""
+        logger.debug("parse_capacity_cycles input: %s", buf.hex())
         if len(buf) < 6:
             raise InvalidResponseError("Capacity buffer too short")
 
         capacity = get_le_ushort(buf, 0) / 100
         num_cycles = get_le_ushort(buf, 4)
 
-        return {
+        result = {
             "capacity": capacity,
             "num_cycles": num_cycles,
         }
+        logger.debug("parse_capacity_cycles result: %s", result)
+        return result
 
     @staticmethod
     def parse_cells(buf: bytes) -> list[float]:
         """Parse individual cell voltages."""
+        logger.debug("parse_cells input: %s", buf.hex())
         if len(buf) < 8:
             raise InvalidResponseError("Cells buffer too short")
 
-        return [
+        cells = [
             get_le_ushort(buf, 0) / 1000,
             get_le_ushort(buf, 2) / 1000,
             get_le_ushort(buf, 4) / 1000,
             get_le_ushort(buf, 6) / 1000,
         ]
+        logger.debug("parse_cells result: %s", cells)
+        return cells
 
     @classmethod
     def parse_all(cls, responses: Dict[int, bytes]) -> Dict[str, float | int | list[float]]:
         """Parse all response buffers into a single dictionary."""
+        logger.debug("parse_all input keys: %s", list(responses))
         required = {0xCCF0, 0xCCF2, 0xCCF3, 0xCCF4}
         if not required.issubset(responses):
             raise InvalidResponseError("Missing response buffers")
@@ -115,5 +131,5 @@ class SokParser:
             **capacity_info,
             "cell_voltages": cells,
         }
-
+        logger.debug("parse_all result: %s", result)
         return result
