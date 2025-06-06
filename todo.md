@@ -67,15 +67,15 @@
 ---
 
 ## ⬜ M5 SokParser (Full)
-- [ ] **Extend parsing**
-  - [ ] `parse_temps(buf)` → temperature °C
-  - [ ] `parse_capacity_cycles(buf)` → capacity, num_cycles
-  - [ ] `parse_cells(buf)` → list[float] volts
-- [ ] **Implement `parse_all(responses)`** (aggregate full dict)
-- [ ] **Add tests** `tests/test_parser_full.py`
-  - [ ] Use fixtures for each buffer ID
-  - [ ] Validate full sensor dict
-- [ ] **All tests green**
+- [x] **Extend parsing**
+  - [x] `parse_temps(buf)` → temperature °C
+  - [x] `parse_capacity_cycles(buf)` → capacity, num_cycles
+  - [x] `parse_cells(buf)` → list[float] volts
+- [x] **Implement `parse_all(responses)`** (aggregate full dict)
+- [x] **Add tests** `tests/test_parser_full.py`
+  - [x] Use fixtures for each buffer ID
+  - [x] Validate full sensor dict
+- [x] **All tests green**
 
 ---
 
