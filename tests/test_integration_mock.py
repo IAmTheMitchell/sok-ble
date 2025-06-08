@@ -28,7 +28,7 @@ class DummyClient:
 async def test_async_update_full_flow(monkeypatch):
     responses = [
         bytes.fromhex("ccf0000000102700000000000000320041000000"),
-        bytes.fromhex("ccf2000000fa0000000000000000000000000000"),
+        bytes.fromhex("ccf2000000140000000000000000000000000000"),
         bytes.fromhex("ccf3000000003200000000000000000000000000"),
         bytes.fromhex("ccf401c50c0002c60c0003bf0c0004c00c000000"),
     ]
@@ -53,7 +53,7 @@ async def test_async_update_full_flow(monkeypatch):
     assert dev.voltage == pytest.approx(13.066)
     assert dev.current == 10.0
     assert dev.soc == 65
-    assert dev.temperature == 25.0
+    assert dev.temperature == 20.0
     assert dev.capacity == 100.0
     assert dev.num_cycles == 50
     assert dev.cell_voltages == [3.269, 3.27, 3.263, 3.264]

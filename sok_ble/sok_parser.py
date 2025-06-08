@@ -68,7 +68,7 @@ class SokParser:
         if len(buf) < 20:
             raise InvalidResponseError("Temp buffer too short")
 
-        temperature = get_le_short(buf, 5) / 10
+        temperature = get_le_short(buf, 5)
         logger.debug("parse_temps result: %s", temperature)
         return temperature
 

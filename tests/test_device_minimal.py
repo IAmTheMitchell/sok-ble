@@ -9,7 +9,7 @@ class DummyClient:
     def __init__(self, *args, **kwargs):
         self._responses = [
             bytes.fromhex("ccf0000000102700000000000000320041000000"),
-            bytes.fromhex("ccf2000000fa0000000000000000000000000000"),
+            bytes.fromhex("ccf2000000140000000000000000000000000000"),
             bytes.fromhex("ccf3000000003200000000000000000000000000"),
             bytes.fromhex("ccf401c50c0002c60c0003bf0c0004c00c000000"),
         ]
