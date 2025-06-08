@@ -1,6 +1,25 @@
 # CHANGELOG
 
 
+## v0.1.1 (2025-06-08)
+
+### Bug Fixes
+
+- Correct parsing and notification flow
+  ([`4332a40`](https://github.com/IAmTheMitchell/sok-ble/commit/4332a401f9c91727bbd7f9fbdde1fc4e3fe96863))
+
+- Correct temperature parsing
+  ([`f99e5c3`](https://github.com/IAmTheMitchell/sok-ble/commit/f99e5c3d8f39b6a84ae5f42083d6e21ad6d4dbdc))
+
+- Use BLE notifications for commands
+  ([`a99d02b`](https://github.com/IAmTheMitchell/sok-ble/commit/a99d02b3f37221e8becf893ba570c6cd8eadfbd7))
+
+### Testing
+
+- Add integration mock test
+  ([`6b2971c`](https://github.com/IAmTheMitchell/sok-ble/commit/6b2971cb9b078a4289681a0f180fc3ef248d5828))
+
+
 ## v0.1.0 (2025-06-06)
 
 ### Build System
