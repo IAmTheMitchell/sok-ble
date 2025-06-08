@@ -21,3 +21,7 @@ async def main() -> None:
 
 asyncio.run(main())
 ```
+
+## References
+[@zuccaro's comment](https://github.com/Louisvdw/dbus-serialbattery/issues/350#issuecomment-1500658941)
+[Bluetooth-Devices/inkbird-ble](https://github.com/Bluetooth-Devices/inkbird-ble)
