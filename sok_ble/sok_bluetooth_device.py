@@ -68,15 +68,16 @@ class SokBluetoothDevice:
             logger.debug("Disconnected from %s", self._ble_device.address)
 
     async def _send_command(
-        self, client: BleakClientWithServiceCache, cmd: int
+        self, client: BleakClientWithServiceCache, cmd: int, expected: int
     ) -> bytes:
-        """Send a command and return the response bytes."""
+        """Send a command and return the response bytes with the given header."""
 
         # If the client supports notifications (real BLE client), prefer that
         start_notify = getattr(client, "start_notify", None)
         if start_notify is None:
             await client.write_gatt_char(UUID_TX, _sok_command(cmd))
-            return bytes(await client.read_gatt_char(UUID_RX))
+            data = bytes(await client.read_gatt_char(UUID_RX))
+            return data
 
         queue: asyncio.Queue[bytes] = asyncio.Queue()
 
@@ -86,7 +87,10 @@ class SokBluetoothDevice:
         await client.start_notify(UUID_RX, handler)
         try:
             await client.write_gatt_char(UUID_TX, _sok_command(cmd))
-            return await asyncio.wait_for(queue.get(), 5.0)
+            while True:
+                data = await asyncio.wait_for(queue.get(), 5.0)
+                if struct.unpack_from(">H", data)[0] == expected:
+                    return data
         finally:
             await client.stop_notify(UUID_RX)
 
@@ -95,22 +99,22 @@ class SokBluetoothDevice:
         responses: dict[int, bytes] = {}
         async with self._connect() as client:
             logger.debug("Send C1")
-            data = await self._send_command(client, 0xC1)
+            data = await self._send_command(client, 0xC1, 0xCCF0)
             logger.debug("Recv 0x%04X: %s", struct.unpack_from(">H", data)[0], data.hex())
             responses[0xCCF0] = data
 
             logger.debug("Send C1")
-            data = await self._send_command(client, 0xC1)
+            data = await self._send_command(client, 0xC1, 0xCCF2)
             logger.debug("Recv 0x%04X: %s", struct.unpack_from(">H", data)[0], data.hex())
             responses[0xCCF2] = data
 
             logger.debug("Send C2")
-            data = await self._send_command(client, 0xC2)
+            data = await self._send_command(client, 0xC2, 0xCCF3)
             logger.debug("Recv 0x%04X: %s", struct.unpack_from(">H", data)[0], data.hex())
             responses[0xCCF3] = data
 
             logger.debug("Send C2")
-            data = await self._send_command(client, 0xC2)
+            data = await self._send_command(client, 0xC2, 0xCCF4)
             logger.debug("Recv 0x%04X: %s", struct.unpack_from(">H", data)[0], data.hex())
             responses[0xCCF4] = data
 

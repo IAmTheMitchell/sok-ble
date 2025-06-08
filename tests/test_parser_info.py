@@ -3,13 +3,13 @@ from sok_ble.sok_parser import SokParser
 
 def test_parse_info_basic():
     hex_data = bytes.fromhex(
-        "E4 0C E9 0C EE 0C F3 0C 64 00 00 00 00 00 00 00 41 00"
+        "ccf0000000102700000000000000320041000000"
     )
     result = SokParser.parse_info(hex_data)
     assert result == {
-        "voltage": 13.23,
         "current": 10.0,
         "soc": 65,
+        "num_cycles": 50,
     }
 
 

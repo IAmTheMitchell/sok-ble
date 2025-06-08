@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 import struct
+import statistics
 from typing import Dict, Sequence
 
 from sok_ble.exceptions import InvalidResponseError
@@ -43,27 +44,19 @@ class SokParser:
 
     @staticmethod
     def parse_info(buf: bytes) -> Dict[str, float | int]:
-        """Parse the information frame for voltage, current and SOC."""
+        """Parse the information frame for current, SOC and cycles."""
         logger.debug("parse_info input: %s", buf.hex())
-        if len(buf) < 18:
+        if len(buf) < 20:
             raise InvalidResponseError("Info buffer too short")
 
-        cells = [
-            get_le_ushort(buf, 0),
-            get_le_ushort(buf, 2),
-            get_le_ushort(buf, 4),
-            get_le_ushort(buf, 6),
-        ]
-        voltage = (sum(cells) / len(cells) * 4) / 1000
-
-        current = get_le_int3(buf, 8) / 10
-
-        soc = struct.unpack_from('<H', buf, 16)[0]
+        current = get_le_int3(buf, 5) / 1000
+        num_cycles = get_le_ushort(buf, 14)
+        soc = get_le_ushort(buf, 16)
 
         result = {
-            "voltage": voltage,
             "current": current,
             "soc": soc,
+            "num_cycles": num_cycles,
         }
         logger.debug("parse_info result: %s", result)
         return result
@@ -72,7 +65,7 @@ class SokParser:
     def parse_temps(buf: bytes) -> float:
         """Parse the temperature from the temperature frame."""
         logger.debug("parse_temps input: %s", buf.hex())
-        if len(buf) < 7:
+        if len(buf) < 20:
             raise InvalidResponseError("Temp buffer too short")
 
         temperature = get_le_short(buf, 5) / 10
@@ -81,18 +74,14 @@ class SokParser:
 
     @staticmethod
     def parse_capacity_cycles(buf: bytes) -> Dict[str, float | int]:
-        """Parse rated capacity and cycle count."""
+        """Parse rated capacity."""
         logger.debug("parse_capacity_cycles input: %s", buf.hex())
-        if len(buf) < 6:
+        if len(buf) < 20:
             raise InvalidResponseError("Capacity buffer too short")
 
-        capacity = get_le_ushort(buf, 0) / 100
-        num_cycles = get_le_ushort(buf, 4)
+        capacity = get_be_uint3(buf, 5) / 128
 
-        result = {
-            "capacity": capacity,
-            "num_cycles": num_cycles,
-        }
+        result = {"capacity": capacity}
         logger.debug("parse_capacity_cycles result: %s", result)
         return result
 
@@ -100,15 +89,13 @@ class SokParser:
     def parse_cells(buf: bytes) -> list[float]:
         """Parse individual cell voltages."""
         logger.debug("parse_cells input: %s", buf.hex())
-        if len(buf) < 8:
+        if len(buf) < 20:
             raise InvalidResponseError("Cells buffer too short")
 
-        cells = [
-            get_le_ushort(buf, 0) / 1000,
-            get_le_ushort(buf, 2) / 1000,
-            get_le_ushort(buf, 4) / 1000,
-            get_le_ushort(buf, 6) / 1000,
-        ]
+        cells = [0.0, 0.0, 0.0, 0.0]
+        for x in range(4):
+            cell_idx = buf[2 + x * 4]
+            cells[cell_idx - 1] = get_le_ushort(buf, 3 + x * 4) / 1000
         logger.debug("parse_cells result: %s", cells)
         return cells
 
@@ -125,10 +112,15 @@ class SokParser:
         capacity_info = cls.parse_capacity_cycles(responses[0xCCF3])
         cells = cls.parse_cells(responses[0xCCF4])
 
+        voltage = statistics.mean(cells) * 4
+
         result = {
-            **info,
+            "voltage": voltage,
+            "current": info["current"],
+            "soc": info["soc"],
             "temperature": temperature,
-            **capacity_info,
+            "capacity": capacity_info["capacity"],
+            "num_cycles": info["num_cycles"],
             "cell_voltages": cells,
         }
         logger.debug("parse_all result: %s", result)

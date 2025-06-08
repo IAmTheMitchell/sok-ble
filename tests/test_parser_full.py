@@ -1,18 +1,19 @@
+import pytest
 from sok_ble.sok_parser import SokParser
 
 
 def test_parse_all():
     info_buf = bytes.fromhex(
-        "E4 0C E9 0C EE 0C F3 0C 64 00 00 00 00 00 00 00 41 00"
+        "ccf0000000102700000000000000320041000000"
     )
     temp_buf = bytes.fromhex(
-        "00 00 00 00 00 FA 00"
+        "ccf2000000fa0000000000000000000000000000"
     )
     cap_buf = bytes.fromhex(
-        "10 27 00 00 32 00 00 00"
+        "ccf3000000003200000000000000000000000000"
     )
     cell_buf = bytes.fromhex(
-        "E4 0C E9 0C EE 0C F3 0C"
+        "ccf401c50c0002c60c0003bf0c0004c00c000000"
     )
 
     responses = {
@@ -24,12 +25,12 @@ def test_parse_all():
 
     result = SokParser.parse_all(responses)
     assert result == {
-        "voltage": 13.23,
+        "voltage": pytest.approx(13.066, rel=1e-3),
         "current": 10.0,
         "soc": 65,
         "temperature": 25.0,
         "capacity": 100.0,
         "num_cycles": 50,
-        "cell_voltages": [3.3, 3.305, 3.31, 3.315],
+        "cell_voltages": [3.269, 3.27, 3.263, 3.264],
     }
 
