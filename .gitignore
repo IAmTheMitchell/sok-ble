@@ -176,3 +176,6 @@ cython_debug/
 # AI
 repomix-output.txt
 repomix-output.xml
+
+# Local testing
+test_local.py
