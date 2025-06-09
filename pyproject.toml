@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "bleak>=0.22.3",
-    "bleak-retry-connector>=3.10.0",
+    "bleak-retry-connector>=3.9.0",
 ]
 authors = [
     {name = "Mitchell Carlson", email = "mitchell.carlson.pro@gmail.com"}
