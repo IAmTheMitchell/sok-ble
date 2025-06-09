@@ -1,6 +1,32 @@
 # CHANGELOG
 
 
+## v0.1.2 (2025-06-09)
+
+### Bug Fixes
+
+- Allow older bleak-retry-connector version
+  ([`9b7a343`](https://github.com/IAmTheMitchell/sok-ble/commit/9b7a34356282885bcc0c14da42e3fe142c6347f6))
+
+### Chores
+
+- Remove duplicate files
+  ([`8862838`](https://github.com/IAmTheMitchell/sok-ble/commit/8862838245b4096bff1c8506da67e1e676ebdcc5))
+
+### Documentation
+
+- Add references
+  ([`23f7e8f`](https://github.com/IAmTheMitchell/sok-ble/commit/23f7e8fbd367115d6ac9890feafa249014a14488))
+
+### Refactoring
+
+- Move into src folder
+  ([`22f5ecf`](https://github.com/IAmTheMitchell/sok-ble/commit/22f5ecf3b0f6b2ae30b8b2a0d140360027d45ed1))
+
+- Remove main.py
+  ([`9c64246`](https://github.com/IAmTheMitchell/sok-ble/commit/9c64246565b74bf0a000263ed58ed8f9dde42e13))
+
+
 ## v0.1.1 (2025-06-08)
 
 ### Bug Fixes
