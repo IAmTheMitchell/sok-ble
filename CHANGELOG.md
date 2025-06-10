@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.1.3 (2025-06-10)
+
+### Bug Fixes
+
+- Handle GATT race on connect
+  ([`a9feacc`](https://github.com/IAmTheMitchell/sok-ble/commit/a9feaccb1f3d9a06128eb7f3b301b9ef292de94a))
+
+### Refactoring
+
+- Use services property
+  ([`f847a68`](https://github.com/IAmTheMitchell/sok-ble/commit/f847a689ec794a0034b0e367dd1fc43057938e42))
+
+
 ## v0.1.2 (2025-06-09)
 
 ### Bug Fixes
