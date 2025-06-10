@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.1.4 (2025-06-10)
+
+### Bug Fixes
+
+- Downgrade async-timeout
+  ([`ce2e655`](https://github.com/IAmTheMitchell/sok-ble/commit/ce2e6557da8e1dcefe9c2a6b2817e9adf56d4423))
+
+
 ## v0.1.3 (2025-06-10)
 
 ### Bug Fixes
