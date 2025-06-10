@@ -9,10 +9,14 @@ import struct
 import logging
 import statistics
 
+import async_timeout
+from bleak import BleakError
+
 from bleak.backends.device import BLEDevice
 
 from sok_ble.const import UUID_RX, UUID_TX, _sok_command
 from sok_ble.sok_parser import SokParser
+from sok_ble.exceptions import BLEConnectionError
 
 logger = logging.getLogger(__name__)
 
@@ -48,51 +52,86 @@ class SokBluetoothDevice:
     async def _connect(self) -> AsyncIterator[BleakClientWithServiceCache]:
         """Connect to the device and yield a BLE client."""
         logger.debug("Connecting to %s", self._ble_device.address)
-        if establish_connection:
-            client = await establish_connection(
-                BleakClientWithServiceCache,
-                self._ble_device,
-                self._ble_device.name or self._ble_device.address,
-                adapter=self._adapter,
-            )
-        else:
-            client = BleakClientWithServiceCache(
-                self._ble_device,
-                adapter=self._adapter,
-            )
-            await client.connect()
-        try:
-            yield client
-        finally:
-            await client.disconnect()
-            logger.debug("Disconnected from %s", self._ble_device.address)
+        last_err: Exception | None = None
+        for attempt in range(3):
+            try:
+                if establish_connection:
+                    client = await establish_connection(
+                        BleakClientWithServiceCache,
+                        self._ble_device,
+                        self._ble_device.name or self._ble_device.address,
+                        adapter=self._adapter,
+                    )
+                else:
+                    client = BleakClientWithServiceCache(
+                        self._ble_device, adapter=self._adapter
+                    )
+                    await client.connect()
+
+                # Force service discovery
+                async with async_timeout.timeout(5):
+                    await client.get_services()
+                await asyncio.sleep(0.15)
+
+                try:
+                    yield client
+                finally:
+                    await client.disconnect()
+                    logger.debug(
+                        "Disconnected from %s", self._ble_device.address
+                    )
+                return
+            except (BleakError, asyncio.TimeoutError) as err:
+                last_err = err
+                logger.debug(
+                    "BLE connect attempt %s failed for %s: %s",
+                    attempt + 1,
+                    self._ble_device.address,
+                    err,
+                )
+                await asyncio.sleep(0.5)
+
+        raise BLEConnectionError(
+            f"Unable to establish GATT connection to {self._ble_device.address}"
+        ) from last_err
 
     async def _send_command(
         self, client: BleakClientWithServiceCache, cmd: int, expected: int
     ) -> bytes:
         """Send a command and return the response bytes with the given header."""
 
-        # If the client supports notifications (real BLE client), prefer that
-        start_notify = getattr(client, "start_notify", None)
-        if start_notify is None:
-            await client.write_gatt_char(UUID_TX, _sok_command(cmd))
-            data = bytes(await client.read_gatt_char(UUID_RX))
-            return data
-
-        queue: asyncio.Queue[bytes] = asyncio.Queue()
-
-        def handler(_: int, data: bytearray) -> None:
-            queue.put_nowait(bytes(data))
-
-        await client.start_notify(UUID_RX, handler)
-        try:
-            await client.write_gatt_char(UUID_TX, _sok_command(cmd))
-            while True:
-                data = await asyncio.wait_for(queue.get(), 5.0)
-                if struct.unpack_from(">H", data)[0] == expected:
+        for attempt in range(2):
+            try:
+                start_notify = getattr(client, "start_notify", None)
+                if start_notify is None:
+                    await client.write_gatt_char(UUID_TX, _sok_command(cmd))
+                    data = bytes(await client.read_gatt_char(UUID_RX))
                     return data
-        finally:
-            await client.stop_notify(UUID_RX)
+
+                queue: asyncio.Queue[bytes] = asyncio.Queue()
+
+                def handler(_: int, data: bytearray) -> None:
+                    queue.put_nowait(bytes(data))
+
+                await client.start_notify(UUID_RX, handler)
+                try:
+                    await client.write_gatt_char(UUID_TX, _sok_command(cmd))
+                    while True:
+                        data = await asyncio.wait_for(queue.get(), 5.0)
+                        if struct.unpack_from(">H", data)[0] == expected:
+                            return data
+                finally:
+                    await client.stop_notify(UUID_RX)
+            except BleakError as err:
+                if attempt == 0:
+                    logger.debug(
+                        "BLE command attempt failed for %s: %s",
+                        self._ble_device.address,
+                        err,
+                    )
+                    await asyncio.sleep(0.2)
+                    continue
+                raise
 
     async def async_update(self) -> None:
         """Poll the device for all telemetry and update attributes."""
