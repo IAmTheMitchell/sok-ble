@@ -26,7 +26,8 @@ class DummyClient:
     async def read_gatt_char(self, *args, **kwargs):
         return self._responses.pop(0)
 
-    async def get_services(self):
+    @property
+    def services(self):
         return []
 
 
