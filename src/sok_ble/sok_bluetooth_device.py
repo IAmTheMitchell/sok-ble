@@ -70,7 +70,7 @@ class SokBluetoothDevice:
 
                 # Force service discovery
                 async with async_timeout.timeout(5):
-                    await client.get_services()
+                    _ = client.services
                 await asyncio.sleep(0.15)
 
                 try:
