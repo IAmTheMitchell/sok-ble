@@ -36,6 +36,7 @@ build-backend = "setuptools.build_meta"
 dev = [
     "pytest>=7.0.1",
     "pytest-asyncio>=1.0.0",
+    "ruff>=0.12.3",
 ]
 
 [tool.semantic_release]
@@ -43,7 +44,12 @@ branch = "main"
 version_toml = ["pyproject.toml:project.version"]
 
 [tool.ruff]
-# Ruff configuration placeholder
+line-length = 88
+target-version = "py311"
 
-[tool.mypy]
-# Mypy configuration placeholder
+[tool.ruff.lint]
+select = ["I", "E", "F"]  # I = isort, E = pycodestyle, F = pyflakes
+
+[tool.ruff.format]
+# Optional: Enable formatter mode (like `black`)
+quote-style = "double"
