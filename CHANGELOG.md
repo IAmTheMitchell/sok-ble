@@ -1,6 +1,37 @@
 # CHANGELOG
 
 
+## v0.1.5 (2025-07-13)
+
+### Bug Fixes
+
+- Resolve ruff line length issues
+  ([`70805c0`](https://github.com/IAmTheMitchell/sok-ble/commit/70805c0b211ca3691099709eb73af0f3fba6d530))
+
+### Build System
+
+- Build with hatchling
+  ([`935093e`](https://github.com/IAmTheMitchell/sok-ble/commit/935093e7ade6125311ec7492d2f535645226d8fd))
+
+- Fix uv.lock and add ruff
+  ([`00cce38`](https://github.com/IAmTheMitchell/sok-ble/commit/00cce388be9ccc88a9a33d8f7660a03928bcd963))
+
+### Chores
+
+- Add background and additional guidance
+  ([`6e3ad00`](https://github.com/IAmTheMitchell/sok-ble/commit/6e3ad00adce528a852acbd098a757c8e813cf0b0))
+
+### Continuous Integration
+
+- Add ruff
+  ([`1a7ad6d`](https://github.com/IAmTheMitchell/sok-ble/commit/1a7ad6d45d4d5e24ffe59b9098f4e9dfab4bfa8a))
+
+### Refactoring
+
+- Fix ruff linting errors
+  ([`859624d`](https://github.com/IAmTheMitchell/sok-ble/commit/859624d5bc3c4a556f24edb34bdad14f5e991333))
+
+
 ## v0.1.4 (2025-06-10)
 
 ### Bug Fixes
