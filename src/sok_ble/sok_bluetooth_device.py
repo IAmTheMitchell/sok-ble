@@ -26,6 +26,7 @@ try:
     )
 except Exception:  # pragma: no cover - optional dependency
     from bleak import BleakClient as BleakClientWithServiceCache
+
     establish_connection = None  # type: ignore[misc]
 
 
@@ -54,6 +55,8 @@ class SokBluetoothDevice:
         """Connect to the device and yield a BLE client."""
         logger.debug("Connecting to %s", self._ble_device.address)
         last_err: Exception | None = None
+        client: BleakClientWithServiceCache | None = None
+
         for attempt in range(3):
             try:
                 if establish_connection:
@@ -65,7 +68,8 @@ class SokBluetoothDevice:
                     )
                 else:
                     client = BleakClientWithServiceCache(
-                        self._ble_device, adapter=self._adapter
+                        self._ble_device,
+                        adapter=self._adapter,
                     )
                     await client.connect()
 
@@ -73,15 +77,7 @@ class SokBluetoothDevice:
                 async with async_timeout.timeout(5):
                     _ = client.services
                 await asyncio.sleep(0.15)
-
-                try:
-                    yield client
-                finally:
-                    await client.disconnect()
-                    logger.debug(
-                        "Disconnected from %s", self._ble_device.address
-                    )
-                return
+                break
             except (BleakError, asyncio.TimeoutError) as err:
                 last_err = err
                 logger.debug(
@@ -91,10 +87,17 @@ class SokBluetoothDevice:
                     err,
                 )
                 await asyncio.sleep(0.5)
+        else:
+            raise BLEConnectionError(
+                f"Unable to establish GATT connection to {self._ble_device.address}"
+            ) from last_err
 
-        raise BLEConnectionError(
-            f"Unable to establish GATT connection to {self._ble_device.address}"
-        ) from last_err
+        assert client is not None
+        try:
+            yield client
+        finally:
+            await client.disconnect()
+            logger.debug("Disconnected from %s", self._ble_device.address)
 
     async def _send_command(
         self, client: BleakClientWithServiceCache, cmd: int, expected: int
