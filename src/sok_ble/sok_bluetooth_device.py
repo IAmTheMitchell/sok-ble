@@ -2,21 +2,20 @@
 
 from __future__ import annotations
 
-from contextlib import asynccontextmanager
-from typing import AsyncIterator, Optional
 import asyncio
-import struct
 import logging
 import statistics
+import struct
+from contextlib import asynccontextmanager
+from typing import AsyncIterator, Optional
 
 import async_timeout
 from bleak import BleakError
-
 from bleak.backends.device import BLEDevice
 
 from sok_ble.const import UUID_RX, UUID_TX, _sok_command
-from sok_ble.sok_parser import SokParser
 from sok_ble.exceptions import BLEConnectionError
+from sok_ble.sok_parser import SokParser
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +32,9 @@ except Exception:  # pragma: no cover - optional dependency
 class SokBluetoothDevice:
     """Minimal BLE interface for a SOK battery."""
 
-    def __init__(self, ble_device: BLEDevice, adapter: Optional[str] | None = None) -> None:
+    def __init__(
+        self, ble_device: BLEDevice, adapter: Optional[str] | None = None
+    ) -> None:
         self._ble_device = ble_device
         self._adapter = adapter
 
@@ -139,22 +140,38 @@ class SokBluetoothDevice:
         async with self._connect() as client:
             logger.debug("Send C1")
             data = await self._send_command(client, 0xC1, 0xCCF0)
-            logger.debug("Recv 0x%04X: %s", struct.unpack_from(">H", data)[0], data.hex())
+            logger.debug(
+                "Recv 0x%04X: %s",
+                struct.unpack_from(">H", data)[0],
+                data.hex(),
+            )
             responses[0xCCF0] = data
 
             logger.debug("Send C1")
             data = await self._send_command(client, 0xC1, 0xCCF2)
-            logger.debug("Recv 0x%04X: %s", struct.unpack_from(">H", data)[0], data.hex())
+            logger.debug(
+                "Recv 0x%04X: %s",
+                struct.unpack_from(">H", data)[0],
+                data.hex(),
+            )
             responses[0xCCF2] = data
 
             logger.debug("Send C2")
             data = await self._send_command(client, 0xC2, 0xCCF3)
-            logger.debug("Recv 0x%04X: %s", struct.unpack_from(">H", data)[0], data.hex())
+            logger.debug(
+                "Recv 0x%04X: %s",
+                struct.unpack_from(">H", data)[0],
+                data.hex(),
+            )
             responses[0xCCF3] = data
 
             logger.debug("Send C2")
             data = await self._send_command(client, 0xC2, 0xCCF4)
-            logger.debug("Recv 0x%04X: %s", struct.unpack_from(">H", data)[0], data.hex())
+            logger.debug(
+                "Recv 0x%04X: %s",
+                struct.unpack_from(">H", data)[0],
+                data.hex(),
+            )
             responses[0xCCF4] = data
 
         parsed = SokParser.parse_all(responses)

@@ -1,5 +1,4 @@
 import pytest
-
 from bleak.backends.device import BLEDevice
 
 from sok_ble import sok_bluetooth_device as device_mod

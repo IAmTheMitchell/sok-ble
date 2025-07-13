@@ -1,6 +1,7 @@
+from contextlib import asynccontextmanager
+
 import pytest
 from bleak.backends.device import BLEDevice
-from contextlib import asynccontextmanager
 
 from sok_ble import sok_bluetooth_device as device_mod
 

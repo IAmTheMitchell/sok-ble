@@ -1,4 +1,4 @@
-from sok_ble.const import minicrc, _sok_command
+from sok_ble.const import _sok_command, minicrc
 
 
 def test_minicrc_known_value():

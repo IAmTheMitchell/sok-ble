@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 import logging
-import struct
 import statistics
+import struct
 from typing import Dict, Sequence
 
 from sok_ble.exceptions import InvalidResponseError
@@ -100,7 +100,9 @@ class SokParser:
         return cells
 
     @classmethod
-    def parse_all(cls, responses: Dict[int, bytes]) -> Dict[str, float | int | list[float]]:
+    def parse_all(
+        cls, responses: Dict[int, bytes]
+    ) -> Dict[str, float | int | list[float]]:
         """Parse all response buffers into a single dictionary."""
         logger.debug("parse_all input keys: %s", list(responses))
         required = {0xCCF0, 0xCCF2, 0xCCF3, 0xCCF4}

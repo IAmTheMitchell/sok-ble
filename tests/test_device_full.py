@@ -36,7 +36,9 @@ async def test_full_update(monkeypatch):
 
     dummy = DummyClient(responses)
     monkeypatch.setattr(device_mod, "establish_connection", None, raising=False)
-    monkeypatch.setattr(device_mod, "BleakClientWithServiceCache", lambda *a, **k: dummy)
+    monkeypatch.setattr(
+        device_mod, "BleakClientWithServiceCache", lambda *a, **k: dummy
+    )
 
     dev = device_mod.SokBluetoothDevice(
         BLEDevice("00:11:22:33:44:55", "Test", None, -60)

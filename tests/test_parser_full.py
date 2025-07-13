@@ -1,4 +1,5 @@
 import pytest
+
 from sok_ble.sok_parser import SokParser
 
 

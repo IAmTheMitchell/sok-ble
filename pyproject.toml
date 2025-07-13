@@ -19,31 +19,33 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 
+[dependency-groups]
+dev = [
+    "pytest>=7.0.1",
+    "pytest-asyncio>=1.0.0",
+    "ruff>=0.12.3",
+]
+
 [project.urls]
 "Homepage" = "https://github.com/IAmTheMitchell/sok-ble"
 "Bug Tracker" = "https://github.com/IAmTheMitchell/sok-ble/issues"
 "Changelog" = "https://github.com/IAmTheMitchell/sok-ble/blob/main/CHANGELOG.md"
 
-[tool.setuptools]
-license-files = []
-# Fix from https://github.com/astral-sh/uv/issues/9513#issuecomment-2519527822
-
 [build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
-
-[dependency-groups]
-dev = [
-    "pytest>=7.0.1",
-    "pytest-asyncio>=1.0.0",
-]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.semantic_release]
 branch = "main"
 version_toml = ["pyproject.toml:project.version"]
 
 [tool.ruff]
-# Ruff configuration placeholder
+line-length = 88
+target-version = "py311"
 
-[tool.mypy]
-# Mypy configuration placeholder
+[tool.ruff.lint]
+select = ["I", "E", "F"]  # I = isort, E = pycodestyle, F = pyflakes
+
+[tool.ruff.format]
+# Optional: Enable formatter mode (like `black`)
+quote-style = "double"
