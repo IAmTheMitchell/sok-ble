@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 import logging
-import struct
 import statistics
+import struct
 from typing import Dict, Sequence
 
 from sok_ble.exceptions import InvalidResponseError

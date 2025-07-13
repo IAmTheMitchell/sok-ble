@@ -2,21 +2,20 @@
 
 from __future__ import annotations
 
-from contextlib import asynccontextmanager
-from typing import AsyncIterator, Optional
 import asyncio
-import struct
 import logging
 import statistics
+import struct
+from contextlib import asynccontextmanager
+from typing import AsyncIterator, Optional
 
 import async_timeout
 from bleak import BleakError
-
 from bleak.backends.device import BLEDevice
 
 from sok_ble.const import UUID_RX, UUID_TX, _sok_command
-from sok_ble.sok_parser import SokParser
 from sok_ble.exceptions import BLEConnectionError
+from sok_ble.sok_parser import SokParser
 
 logger = logging.getLogger(__name__)
 
