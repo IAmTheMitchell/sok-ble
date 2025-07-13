@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.1.6 (2025-07-13)
+
+### Bug Fixes
+
+- Prevent reconnect loop in async context
+  ([`688d298`](https://github.com/IAmTheMitchell/sok-ble/commit/688d29874cb09c2ea40df818d07122d1bad32141))
+
+
 ## v0.1.5 (2025-07-13)
 
 ### Bug Fixes
