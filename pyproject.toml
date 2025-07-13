@@ -23,6 +23,7 @@ classifiers = [
 dev = [
     "pytest>=7.0.1",
     "pytest-asyncio>=1.0.0",
+    "ruff>=0.12.3",
 ]
 
 [project.urls]
