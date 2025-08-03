@@ -1,6 +1,18 @@
 # CHANGELOG
 
 
+## [0.1.7](https://github.com/IAmTheMitchell/sok-ble/compare/v0.1.6...v0.1.7) (2025-08-03)
+
+
+### Bug Fixes
+
+* fix bleak import ([e413bb7](https://github.com/IAmTheMitchell/sok-ble/commit/e413bb75ad3e10a73dba08881829e76dc8358d2c))
+
+
+### Documentation
+
+* update CI badges ([a3f4f24](https://github.com/IAmTheMitchell/sok-ble/commit/a3f4f2478dc96a8861820adce5b40eeab1bb581d))
+
 ## v0.1.6 (2025-07-13)
 
 ### Bug Fixes
