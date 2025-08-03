@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## [0.1.8](https://github.com/IAmTheMitchell/sok-ble/compare/v0.1.7...v0.1.8) (2025-08-03)
+
+
+### Bug Fixes
+
+* fix release ([9257795](https://github.com/IAmTheMitchell/sok-ble/commit/9257795edaa5937371fd3870ae7434a468bbdca2))
+* fix release ([25395a2](https://github.com/IAmTheMitchell/sok-ble/commit/25395a22d35d62516b5ddb5d1be5e944e654cf15))
+
 ## [0.1.7](https://github.com/IAmTheMitchell/sok-ble/compare/v0.1.6...v0.1.7) (2025-08-03)
 
 
