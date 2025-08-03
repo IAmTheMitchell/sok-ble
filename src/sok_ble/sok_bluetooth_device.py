@@ -10,8 +10,8 @@ from contextlib import asynccontextmanager
 from typing import AsyncIterator, Optional
 
 import async_timeout
-from bleak import BleakError
 from bleak.backends.device import BLEDevice
+from bleak.exc import BleakError
 
 from sok_ble.const import UUID_RX, UUID_TX, _sok_command
 from sok_ble.exceptions import BLEConnectionError

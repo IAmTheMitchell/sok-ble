@@ -8,4 +8,3 @@ class BLEConnectionError(SokError):
 
 class InvalidResponseError(SokError):
     """Raised when an invalid response is received."""
-

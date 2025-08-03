@@ -14,19 +14,20 @@ logger = logging.getLogger(__name__)
 
 # Endian helper functions copied from the reference addon
 
+
 def get_le_short(data: Sequence[int] | bytes | bytearray, offset: int) -> int:
     """Read a little-endian signed short."""
-    return struct.unpack_from('<h', bytes(data), offset)[0]
+    return struct.unpack_from("<h", bytes(data), offset)[0]
 
 
 def get_le_ushort(data: Sequence[int] | bytes | bytearray, offset: int) -> int:
     """Read a little-endian unsigned short."""
-    return struct.unpack_from('<H', bytes(data), offset)[0]
+    return struct.unpack_from("<H", bytes(data), offset)[0]
 
 
 def get_le_int3(data: Sequence[int] | bytes | bytearray, offset: int) -> int:
     """Read a 3-byte little-endian signed integer."""
-    b0, b1, b2 = bytes(data)[offset:offset + 3]
+    b0, b1, b2 = bytes(data)[offset : offset + 3]
     val = b0 | (b1 << 8) | (b2 << 16)
     if val & 0x800000:
         val -= 0x1000000
@@ -35,7 +36,7 @@ def get_le_int3(data: Sequence[int] | bytes | bytearray, offset: int) -> int:
 
 def get_be_uint3(data: Sequence[int] | bytes | bytearray, offset: int) -> int:
     """Read a 3-byte big-endian unsigned integer."""
-    b0, b1, b2 = bytes(data)[offset:offset + 3]
+    b0, b1, b2 = bytes(data)[offset : offset + 3]
     return (b0 << 16) | (b1 << 8) | b2
 
 

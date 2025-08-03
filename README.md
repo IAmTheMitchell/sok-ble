@@ -1,6 +1,7 @@
 # SOK BLE
 
-![CI](https://github.com/IAmTheMitchell/sok-ble/actions/workflows/ci.yml/badge.svg)
+![Tests](https://github.com/IAmTheMitchell/sok-ble/actions/workflows/test.yml/badge.svg)
+![Release](https://github.com/IAmTheMitchell/sok-ble/actions/workflows/release.yml/badge.svg)
 
 Python library for interacting with SOK Bluetooth-enabled batteries.
 
@@ -23,5 +24,6 @@ asyncio.run(main())
 ```
 
 ## References
+
 [@zuccaro's comment](https://github.com/Louisvdw/dbus-serialbattery/issues/350#issuecomment-1500658941)
 [Bluetooth-Devices/inkbird-ble](https://github.com/Bluetooth-Devices/inkbird-ble)
