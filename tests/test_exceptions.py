@@ -16,4 +16,3 @@ def test_raises_ble_connection_error():
 def test_raises_invalid_response_error():
     with pytest.raises(InvalidResponseError):
         raise InvalidResponseError()
-

@@ -26,4 +26,3 @@ def test_cell_voltage_stats():
     assert dev.cell_voltage_delta == pytest.approx(0.15)
     assert dev.cell_index_max == 3
     assert dev.cell_index_min == 2
-
