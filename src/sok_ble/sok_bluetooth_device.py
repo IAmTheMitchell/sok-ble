@@ -10,6 +10,7 @@ from contextlib import asynccontextmanager
 from typing import AsyncIterator, Optional
 
 import async_timeout
+from bleak.backends.characteristic import BleakGATTCharacteristic
 from bleak.backends.device import BLEDevice
 from bleak.exc import BleakError
 
@@ -114,7 +115,7 @@ class SokBluetoothDevice:
 
                 queue: asyncio.Queue[bytes] = asyncio.Queue()
 
-                def handler(_: int, data: bytearray) -> None:
+                def handler(_: BleakGATTCharacteristic, data: bytearray) -> None:
                     queue.put_nowait(bytes(data))
 
                 await client.start_notify(UUID_RX, handler)
@@ -136,6 +137,10 @@ class SokBluetoothDevice:
                     await asyncio.sleep(0.2)
                     continue
                 raise
+        raise BleakError(
+            f"Failed to receive response 0x{expected:04X} "
+            f"from {self._ble_device.address}"
+        )
 
     async def async_update(self) -> None:
         """Poll the device for all telemetry and update attributes."""
@@ -180,13 +185,30 @@ class SokBluetoothDevice:
         parsed = SokParser.parse_all(responses)
         logger.debug("Parsed update: %s", parsed)
 
-        self.voltage = parsed["voltage"]
-        self.current = parsed["current"]
-        self.soc = parsed["soc"]
-        self.temperature = parsed["temperature"]
-        self.capacity = parsed["capacity"]
-        self.num_cycles = parsed["num_cycles"]
-        self.cell_voltages = parsed["cell_voltages"]
+        voltage = parsed.get("voltage")
+        self.voltage = voltage if isinstance(voltage, (int, float)) else None
+
+        current = parsed.get("current")
+        self.current = current if isinstance(current, (int, float)) else None
+
+        soc = parsed.get("soc")
+        self.soc = soc if isinstance(soc, int) else None
+
+        temperature = parsed.get("temperature")
+        self.temperature = (
+            temperature if isinstance(temperature, (int, float)) else None
+        )
+
+        capacity = parsed.get("capacity")
+        self.capacity = capacity if isinstance(capacity, (int, float)) else None
+
+        num_cycles = parsed.get("num_cycles")
+        self.num_cycles = num_cycles if isinstance(num_cycles, int) else None
+
+        cell_voltages = parsed.get("cell_voltages")
+        self.cell_voltages = (
+            list(cell_voltages) if isinstance(cell_voltages, list) else None
+        )
 
         self.num_samples += 1
 
