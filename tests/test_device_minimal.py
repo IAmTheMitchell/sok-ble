@@ -35,9 +35,7 @@ async def test_minimal_update(monkeypatch):
     monkeypatch.setattr(device_mod, "establish_connection", None, raising=False)
     monkeypatch.setattr(device_mod, "BleakClientWithServiceCache", DummyClient)
 
-    dev = device_mod.SokBluetoothDevice(
-        BLEDevice("00:11:22:33:44:55", "Test", None, -60)
-    )
+    dev = device_mod.SokBluetoothDevice(BLEDevice("00:11:22:33:44:55", "Test", None))
 
     await dev.async_update()
 

@@ -5,7 +5,7 @@ from sok_ble.sok_bluetooth_device import SokBluetoothDevice
 
 
 def make_device():
-    return SokBluetoothDevice(BLEDevice("00:11:22:33:44:55", "Test", None, -60))
+    return SokBluetoothDevice(BLEDevice("00:11:22:33:44:55", "Test", None))
 
 
 def test_power_property():
