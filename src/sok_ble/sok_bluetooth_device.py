@@ -87,6 +87,15 @@ class SokBluetoothDevice:
                     self._ble_device.address,
                     err,
                 )
+                if client is not None:
+                    try:
+                        await asyncio.shield(client.disconnect())
+                    except (BleakError, asyncio.TimeoutError):
+                        logger.debug(
+                            "Failed to disconnect after connect error for %s",
+                            self._ble_device.address,
+                        )
+                    client = None
                 await asyncio.sleep(0.5)
         else:
             raise BLEConnectionError(
