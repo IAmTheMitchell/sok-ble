@@ -45,9 +45,7 @@ async def test_async_update_full_flow(monkeypatch):
 
     monkeypatch.setattr(device_mod.SokBluetoothDevice, "_connect", fake_connect)
 
-    dev = device_mod.SokBluetoothDevice(
-        BLEDevice("00:11:22:33:44:55", "Test", None, -60)
-    )
+    dev = device_mod.SokBluetoothDevice(BLEDevice("00:11:22:33:44:55", "Test", None))
 
     await dev.async_update()
 

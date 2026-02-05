@@ -40,9 +40,7 @@ async def test_full_update(monkeypatch):
         device_mod, "BleakClientWithServiceCache", lambda *a, **k: dummy
     )
 
-    dev = device_mod.SokBluetoothDevice(
-        BLEDevice("00:11:22:33:44:55", "Test", None, -60)
-    )
+    dev = device_mod.SokBluetoothDevice(BLEDevice("00:11:22:33:44:55", "Test", None))
 
     await dev.async_update()
 

@@ -6,8 +6,8 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "async-timeout>=4.0.3",
-    "bleak>=0.22.3",
-    "bleak-retry-connector>=3.9.0",
+    "bleak>=1.0.1",
+    "bleak-retry-connector>=4.4.3",
 ]
 authors = [
     {name = "Mitchell Carlson", email = "mitchell.carlson.pro@gmail.com"}
