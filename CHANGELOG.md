@@ -1,6 +1,18 @@
 # CHANGELOG
 
 
+## [0.1.9](https://github.com/IAmTheMitchell/sok-ble/compare/v0.1.8...v0.1.9) (2026-02-11)
+
+
+### Bug Fixes
+
+* handle client disconnection on connection errors in SokBluetoothDevice ([#57](https://github.com/IAmTheMitchell/sok-ble/issues/57)) ([06801aa](https://github.com/IAmTheMitchell/sok-ble/commit/06801aa10182be44be38da7eb66f6af0a6a5f040))
+
+
+### Documentation
+
+* update AI directives ([afb9309](https://github.com/IAmTheMitchell/sok-ble/commit/afb9309eaa061d9087fc49f74593b1358810307a))
+
 ## [0.1.8](https://github.com/IAmTheMitchell/sok-ble/compare/v0.1.7...v0.1.8) (2025-08-03)
 
 
