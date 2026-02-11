@@ -1,7 +1,10 @@
+import asyncio
+
 import pytest
 from bleak.backends.device import BLEDevice
 
 from sok_ble import sok_bluetooth_device as device_mod
+from sok_ble.exceptions import BLEConnectionError
 
 
 class DummyClient:
@@ -42,3 +45,37 @@ async def test_minimal_update(monkeypatch):
     assert dev.voltage == pytest.approx(13.066)
     assert dev.current == 10.0
     assert dev.soc == 65
+
+
+@pytest.mark.asyncio
+async def test_disconnect_on_connect_failure(monkeypatch):
+    class FailingClient:
+        disconnect_calls = 0
+
+        def __init__(self, *args, **kwargs):
+            return None
+
+        async def connect(self):
+            return True
+
+        async def disconnect(self):
+            FailingClient.disconnect_calls += 1
+            return True
+
+        @property
+        def services(self):
+            raise asyncio.TimeoutError
+
+    async def fast_sleep(*args, **kwargs):
+        return None
+
+    monkeypatch.setattr(device_mod, "establish_connection", None, raising=False)
+    monkeypatch.setattr(device_mod, "BleakClientWithServiceCache", FailingClient)
+    monkeypatch.setattr(device_mod.asyncio, "sleep", fast_sleep)
+
+    dev = device_mod.SokBluetoothDevice(BLEDevice("00:11:22:33:44:55", "Test", None))
+
+    with pytest.raises(BLEConnectionError):
+        await dev.async_update()
+
+    assert FailingClient.disconnect_calls == 3
