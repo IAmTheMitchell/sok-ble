@@ -179,3 +179,9 @@ repomix-output.xml
 
 # Local testing
 test_local.py
+
+# Beads / Dolt files (added by bd init)
+.dolt/
+*.db
+.beads/issues.jsonl
+.beads/interactions.jsonl
